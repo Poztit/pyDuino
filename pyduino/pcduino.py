@@ -4,9 +4,8 @@
 # Par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
-# message d'accueil 
-print "Pyduino for pcDuino - by www.mon-club-elec.fr - 2015 "
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 ### Expressions regulieres ###
 import re # Expression regulieres pour analyse de chaines
@@ -18,7 +17,7 @@ except:
 	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
 
 ### Module des variables communes partagées entre les éléments Pyduino ###
-import coreCommon as common
+from .core import common
 
 ### Declarations ###
 # NB : les variables déclarées ici ne sont pas modifiables en dehors du module

@@ -4,9 +4,8 @@
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
-# message d'accueil 
-print "Pyduino for PC Desktop with Arduino - v0.5dev - by www.mon-club-elec.fr - 2014 "
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 ### expressions regulieres ###
 import re # expression regulieres pour analyse de chaines
@@ -18,7 +17,7 @@ except:
 	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
 
 ### module des variables communes partagées entre les éléments Pyduino ###
-import coreCommon as common
+from .core import common
 
 ### declarations ###
 # NB : les variables déclarées ici ne sont pas modifiables en dehors du module
@@ -38,9 +37,9 @@ common.PWM0, common.PWM1, common.PWM2, common.PWM3, common.PWM4,common.PWM5 = 3,
 
 
 ### les sous modules Pyduino utilisés par ce module - à mettre après les variables spécifiques ci-dessus ###
-from coreBase   import *
-from coreSystem import *
-from coreLibs   import *
+from .core.base   import *
+from .core.system import *
+from .core.libs   import *
 
 # variables globales du module 
 

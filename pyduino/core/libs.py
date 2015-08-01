@@ -4,13 +4,16 @@
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 ### importe les autres modules Pyduino ###
 
 #from pyduinoCoreCommon import * # variables communes
-import coreCommon as common # variables communes - pour appel explicite variable commmune
+from . import common # variables communes - pour appel explicite variable commmune
 
-from coreBase   import *
-from coreSystem import *
+from .base   import *
+from .system import *
 #from pyduinoCoreLibs import *
 
 ### Liquid Crystal ###

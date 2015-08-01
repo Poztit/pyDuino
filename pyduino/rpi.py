@@ -4,8 +4,8 @@
 # Par F. ILLIEN - Tous droits réservés - 2015
 # www.mon-club-elec.fr - Licence GPLv3
 
-print "Pyduino for Raspberry Pi - by www.mon-club-elec.fr - 2015 "
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 ### Expressions regulieres ###
 import re # Expression regulieres pour analyse de chaines
@@ -17,7 +17,7 @@ except:
 	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
 
 ### Module des variables communes partagées entre les éléments Pyduino ###
-import coreCommon as common
+from .core import common
 
 #### declarations ####
 # NB : les variables déclarées ici ne sont pas modifiables en dehors du module

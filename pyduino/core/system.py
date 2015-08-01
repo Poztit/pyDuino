@@ -6,6 +6,9 @@
 
 ### imports ###
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 ### système ###
 import subprocess
 #import getpass # pour connaitre utilisateur systeme 
@@ -25,8 +28,8 @@ except:
 
 
 ### importe les autres modules Pyduino ###
-from coreCommon import * # variables communes
-from coreBase import *
+from .common import * # variables communes
+from .base import *
 #from pyduinoCoreSystem import *
 #from pyduinoCoreLibs import *
 

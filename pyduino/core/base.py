@@ -6,6 +6,9 @@
 
 ### imports ###
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 ### temps ###
 import time
 import datetime # gestion date 
@@ -18,7 +21,7 @@ from math import *  # pour acces direct aux fonctions math..
 import random as rd # pour fonctions aléatoires - alias pour éviter problème avec fonction arduino random()
 
 ### importe les autres modules Pyduino ###
-import coreCommon as common # variables communes - doit être présente dans TOUS les modules
+from . import common # variables communes - doit être présente dans TOUS les modules
 
 
 ### Fonctions Pyduino : Core : Base ###

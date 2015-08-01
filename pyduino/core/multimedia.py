@@ -4,6 +4,9 @@
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 ### imports ###
 
 ### multimedia ### 
@@ -19,10 +22,10 @@ except:
 import re # expression regulieres pour analyse de chaines
 
 ### importe les autres modules Pyduino ###
-from coreCommon import * # variables communes
-from coreBase   import *
-from coreSystem import *
-from coreLibs   import *
+from .common import * # variables communes
+from .base   import *
+from .system import *
+from .libs   import *
 
 ### FONCTIONS MULTIMEDIA ###
 

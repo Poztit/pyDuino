@@ -4,6 +4,9 @@
 # par X. HINAULT - nov 2012 - Tous droits réservés
 # GPLv3 - www.mon-club-elec.fr
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 # import utiles
 import os
 
