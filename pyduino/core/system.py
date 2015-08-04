@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
@@ -18,15 +17,11 @@ import re # expression regulieres pour analyse de chaines
 # reseau 
 import socket 
 import smtplib # serveur mail 
-try:
-	import netifaces # pour acces interf reseaux - dépendance : python-netifaces
-except:
-	print "ATTENTION : Module netifaces manquant : installer le paquet python-netifaces "
-
+import netifaces # pour acces interf reseaux - dépendance : python-netifaces
 
 ### importe les autres modules Pyduino ###
-from coreCommon import * # variables communes
-from coreBase import *
+from .common import * # variables communes
+from .base import *
 #from pyduinoCoreSystem import *
 #from pyduinoCoreLibs import *
 
@@ -47,19 +42,17 @@ class Serial():
 		text = str(text) # au cas où
 		arg  = list(arg) # conversion en list... évite problèmes.. 
 		
-		#print arg - debug
-		
 		if not len(arg) == 0: # si arg a au moins 1 element (nb : None renvoie True.. car arg existe..)
 			if arg[0] == DEC and text.isdigit():
-				print text
+				print(text)
 			elif arg[0] == BIN and text.isdigit():
-				print bin(int(text))
+				print(bin(int(text)))
 			elif arg[0]==OCT and text.isdigit():
-				print oct(int(text))
+				print(oct(int(text)))
 			elif arg[0]==HEX and text.isdigit():
-				print hex(int(text))
+				print(hex(int(text)))
 		else: # si pas de formatage de chaine = affiche tel que 
-			print text
+			print(text)
 		
 		
 		# ajouter formatage Hexa, Bin.. cf fonction native bin... 
@@ -153,7 +146,7 @@ def dataPath(typeIn):
 	elif typeIn == VIDEO:
 		return data_dir_video
 	else: 
-		print "Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO"
+		print("Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO")
 
 ### set data Path ###
 def setDataPath(typeIn, dirIn):
@@ -170,7 +163,7 @@ def setDataPath(typeIn, dirIn):
 		global data_dir_video
 		data_dir_video = dirIn
 	else: 
-		print "Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO"
+		print("Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO")
 
 ### (get) source Path ###
 def sourcesPath(typeIn):
@@ -183,7 +176,7 @@ def sourcesPath(typeIn):
 	elif typeIn == VIDEO:
 		return src_dir_video
 	else: 
-		print "Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO"
+		print("Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO")
 
 ### set sources Path ###
 def setSourcesPath(typeIn, dirIn):
@@ -200,7 +193,7 @@ def setSourcesPath(typeIn, dirIn):
 		global src_dir_video
 		src_dir_video = dirIn
 	else: 
-		print "Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO"
+		print("Erreur : choisir parmi TEXT, IMAGE, AUDIO, VIDEO")
 
 
 ### fonction gestion répertoires / fichiers ### 
@@ -243,7 +236,7 @@ def mkdir(pathIn): # crée le répertoire si il n'existe pas
 		os.makedirs(pathIn) # cree les rep intermediaires
 		return True
 	except OSError:
-		print "Probleme creation"
+		print("Probleme creation")
 		return False
 
 def rmdir(pathIn): # efface le répertoire
@@ -251,7 +244,7 @@ def rmdir(pathIn): # efface le répertoire
 		os.rmdir(pathIn)  #efface repertoire
 		return True
 	except OSError:
-		print "Effacement impossible"
+		print("Effacement impossible")
 		return False
 
 def listdirs(pathIn): # liste les repertoires 
@@ -290,7 +283,7 @@ def remove(filepathIn):
 		os.remove(filepathIn)  #efface fichier
 		return True
 	except OSError:
-		print "Effacement impossible"
+		print("Effacement impossible")
 		return False
 
 ### fonctions objet file ###
@@ -512,7 +505,7 @@ class MailServer():
 		smtpserver.ehlo()
 		smtpserver.starttls()
 		smtpserver.ehlo()
-		print smtpserver.login(self.fromMail, self.fromPassword)
+		print(smtpserver.login(self.fromMail, self.fromPassword))
 		
 		"""
 		# preparation du mail 
@@ -525,15 +518,13 @@ class MailServer():
 		mail['Subject'] = self.subject
 		mail['From']    = self.fromMail
 		mail['To']      = self.toMail
-		print ""
-		print mail.as_string() # debug
 		
 		# envoi du mail 
 		smtpserver.sendmail(self.fromMail, [self.toMail], mail.as_string())
 		
 		# fermeture serveur smtp
 		#smtpserver.close()
-		print smtpserver.quit()
+		print(smtpserver.quit())
 	
 	def sendMailImage(self):
 		
@@ -570,8 +561,6 @@ class MailServer():
 		fp.close()# ferme le fichier
 		
 		mail.attach(img) # attache l'image au mail
-		
-		print mail.as_string() # debug
 		
 		# envoi du mail 
 		smtpserver.sendmail(self.fromMail, [self.toMail], mail.as_string())

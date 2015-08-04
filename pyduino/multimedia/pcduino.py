@@ -4,8 +4,8 @@
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
-# message d'accueil 
-print "Pyduino Multimedia for pcDuino - v0.4 - by www.mon-club-elec.fr - 2013 "
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 # modules utiles 
 
@@ -24,12 +24,11 @@ except:
 	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
 
 #-- les sous modules Pyduino utilisés par ce module --
-from CoreCommon import * # variables communes
-from CoreBase   import *
-from CoreSystem import *
-from CoreLibs   import *
-
-from CoreMultimedia import *
+from ..core.common import * # variables communes
+from ..core.base   import *
+from ..core.system import *
+from ..core.libs   import *
+from ..core.multimedia import *
 
 
 # -- declarations --

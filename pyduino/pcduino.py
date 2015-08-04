@@ -1,24 +1,16 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # Par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
-
-# message d'accueil 
-print "Pyduino for pcDuino - by www.mon-club-elec.fr - 2015 "
-
 
 ### Expressions regulieres ###
 import re # Expression regulieres pour analyse de chaines
 
 # Serie Uart
-try:
-	import serial
-except: 
-	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
+import serial
 
 ### Module des variables communes partagées entre les éléments Pyduino ###
-import coreCommon as common
+from .core import common
 
 ### Declarations ###
 # NB : les variables déclarées ici ne sont pas modifiables en dehors du module
@@ -45,9 +37,9 @@ common.PWM0, common.PWM1, common.PWM2, common.PWM3, common.PWM4,common.PWM5 = co
 
 
 ### Les sous modules Pyduino utilisés par ce module - à mettre après les variables spécifiques ci-dessus ###
-from coreBase   import *
-from coreSystem import *
-from coreLibs   import *
+from .core.base   import *
+from .core.system import *
+from .core.libs   import *
 ### Pour PWM - accès kernel + transposition C to Python ###
 import fcntl # Module pour fonction ioctl
 # from ctypes import *
@@ -206,8 +198,6 @@ def analogRead(pinAnalog):
 	out = out.split(":") # scinde en 2 la chaine "adc 0 : valeur"
 	out = out[1] # garde la 2eme partie = la valeur
 	
-	if debug: print out # debug
-	
 	#correct=5 # valeur mesure à 0V 
 	correct = 0 # valeur mesure à 0V 
 	
@@ -221,7 +211,6 @@ def analogReadRepeat(pinAnalogIn,repeatIn):
 	# réalise n mesures 
 	for i in range(repeatIn): 
 		sommeMesures = sommeMesures + analogRead(pinAnalogIn)
-		# print i # debug 
 		
 	moyenne = float(sommeMesures) / repeatIn # calcul de la moyenne 
 	
@@ -278,7 +267,6 @@ def analogReadmVRepeat(*args):
 		# réalise n mesures avec la forme analogReadmV(pinAnalogIn) 
 		for i in range(repeatIn): 
 			sommeMesures = sommeMesures + analogReadmV(pinAnalogIn)
-			# print i # debug 
 			
 		moyenne = float(sommeMesures) / repeatIn # calcul de la moyenne 
 		
@@ -291,7 +279,6 @@ def analogReadmVRepeat(*args):
 		# réalise n mesures avec la forme analogReadmV(pinAnalogIn, rangeIn, mVIn) 
 		for i in range(repeatIn): 
 			sommeMesures = sommeMesures + analogReadmV(pinAnalogIn, rangeIn, mVIn)
-			# print i # debug 
 			
 		moyenne = float(sommeMesures) / repeatIn # calcul de la moyenne 
 
@@ -311,7 +298,6 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 	freq = ctypes.c_uint(frequencePWMIn) #frequence 
 	# ATTENTION : la valeur ctype ne pourra pas etre utilisee comme une valeur Python... 
 	
-	#print pin
 	# attention : utiliser pinPWMIn pour les conditions - pin est c_type.
 	
 	pwmfreq = PWM_Freq() # declare objet structure
@@ -330,13 +316,12 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 				ret = fcntl.ioctl(fd, PWM_FREQ, pwmfreq)  # fixe la frequence voulue 
 				#initPwmFlag[pinPWMIn]=True # flag temoin config freq PWM mis à True
 				initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn # flag temoin config freq PWM mis à valeur courante freq
-				#print ret # debug
 				if ret < 0 :
-					print "Problème lors configuration PWM"
+					print("Problème lors configuration PWM")
 					if fd : fd.close()
 					return
 			else:
-				print "Fréquence incompatible : choisir parmi 195,260,390,520,781 Hz"
+				raise "Fréquence incompatible : choisir parmi 195,260,390,520,781 Hz"
 			
 		elif pinPWMIn == 3 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11 : 
 			# broches PWM 3/9/10/11 supporte frequences[125-2000]Hz à differents dutycycle
@@ -344,9 +329,9 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 				
 				# -- stop pwmtmr sur broche ---
 				ret = fcntl.ioctl(fd, PWMTMR_STOP, ctypes.c_ulong(pwmfreq.channel))
-				#print ret
+
 				if ret < 0 :
-					print "Probleme lors arret PWM"
+					print("Probleme lors arret PWM")
 					if fd : fd.close()
 					return
 				
@@ -354,16 +339,16 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 				ret = fcntl.ioctl(fd, PWM_FREQ, pwmfreq)
 				#initPwmFlag[pinPWMIn]=True # flag temoin config freq PWM mis à True
 				initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn # flag temoin config freq PWM mis à valeur courante freq
-				#print ret
+
 				if ret < 0 :
-					print "Probleme lors configuration PWM"
+					print("Probleme lors configuration PWM")
 					if fd : fd.close()
 					return
 				
 			
 		
 		if fd : fd.close() # ferme fichier si existe 
-	else : print "Broche non autorisee pour PWM"
+	else : raise "Broche non autorisee pour PWM"
 	
 
 # analogWrite - sortie analogique = PWM
@@ -395,7 +380,7 @@ def analogWriteHardware(pinPWMIn, largeurIn):
 			ret = fcntl.ioctl(fd, HWPWM_DUTY, pwmconfig)
 			#print ret
 			if ret < 0 :
-				print "Probleme lors configuration HWPWM_DUTY"
+				print("Probleme lors configuration HWPWM_DUTY")
 				if fd : fd.close()
 				return
 			
@@ -404,7 +389,7 @@ def analogWriteHardware(pinPWMIn, largeurIn):
 			ret = fcntl.ioctl(fd, PWM_CONFIG, pwmconfig)
 			#print ret
 			if ret < 0 :
-				print "Probleme lors configuration PWM"
+				print("Probleme lors configuration PWM")
 				if fd : fd.close()
 				return
 				
@@ -412,12 +397,12 @@ def analogWriteHardware(pinPWMIn, largeurIn):
 			ret = fcntl.ioctl(fd, PWMTMR_START, ctypes.c_ulong(0))
 			#print ret
 			if ret < 0 :
-				print "Probleme lors configuration PWM"
+				print("Probleme lors configuration PWM")
 				if fd : fd.close()
 				return
 		
 		if fd : fd.close() # ferme fichier si existe 
-	else : print "Broche non autrisee pour PWM"
+	else : print("Broche non autrisee pour PWM")
 	
 
 # analogWrite # idem Arduino en 0-255
@@ -479,19 +464,14 @@ class Uart():
 			if len(arg) == 0: # si pas d'arguments
 				#uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = 10) # initialisation port serie uart
 				uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout = 10) # initialisation port serie uart
-				print "Initialisation Port Serie : /dev/ttyS1 @ " + str(rateIn) + " = OK " # affiche debug
 			elif len(arg) == 1 : # si timeout
 				#uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = arg[0]) # initialisation port serie uart
 				uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout = arg[0]) # initialisation port serie uart
-				print "Initialisation Port Serie : /dev/ttyS1 @ " + str(rateIn) + " = OK " # affiche debug
-				print "timeout = " + str(arg[0])
 			elif len(arg) == 2 : # si timeout et port 
 				#uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = arg[0]) # initialisation port serie uart
 				uartPort = serial.Serial(arg[1], rateIn, timeout = arg[0]) # initialisation port serie uart
-				print "Initialisation Port Serie : " + arg[1] + " @ " + str(rateIn) + " = OK " # affiche debug
-				print "timeout = " + str(arg[0])
 		except:
-			print "Erreur lors initialisation port Serie"
+			raise "Erreur lors initialisation port Serie"
 			
 	def println(self, text, *arg):  # message avec saut de ligne
 		# Envoi chaine sur port serie uart 

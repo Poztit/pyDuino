@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
@@ -7,11 +6,10 @@
 ### importe les autres modules Pyduino ###
 
 #from pyduinoCoreCommon import * # variables communes
-import coreCommon as common # variables communes - pour appel explicite variable commmune
+from . import common # variables communes - pour appel explicite variable commmune
 
-from coreBase   import *
-from coreSystem import *
-#from pyduinoCoreLibs import *
+from .base   import *
+from .system import *
 
 ### Liquid Crystal ###
 
@@ -94,7 +92,7 @@ class LiquidCrystal():
 		digitalWrite(self.D5, HIGH)
 		digitalWrite(self.D4, HIGH)
 		# print "in begin : ",common.debug # message debug de debug... 
-		if common.debug: print "0011" # debug
+		if common.debug: print("0011") # debug
 		
 		self.pulseEnable()
 		
@@ -104,7 +102,7 @@ class LiquidCrystal():
 		digitalWrite(self.D6, LOW)
 		digitalWrite(self.D5, HIGH)
 		digitalWrite(self.D4, HIGH)
-		if common.debug: print "0011" # debug
+		if common.debug: print("0011") # debug
 		
 		self. pulseEnable()
 
@@ -113,7 +111,7 @@ class LiquidCrystal():
 		digitalWrite(self.D6, LOW)
 		digitalWrite(self.D5, HIGH)
 		digitalWrite(self.D4, HIGH)
-		if common.debug: print "0011" # debug
+		if common.debug: print("0011") # debug
 
 		self.pulseEnable()
 		
@@ -126,7 +124,7 @@ class LiquidCrystal():
 		digitalWrite(self.D6, LOW)
 		digitalWrite(self.D5, HIGH)
 		digitalWrite(self.D4, LOW)
-		if common.debug: print "0010" # debug
+		if common.debug: print("0010") # debug
 		
 		self.pulseEnable()
 
@@ -153,14 +151,14 @@ class LiquidCrystal():
 		self.configEntryMode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT
 		self.cmd4Bits(LCD_ENTRYMODESET | self.configEntryMode)
 		
-		if common.debug: print "----fin init----" # debug
+		if common.debug: print("----fin init----") # debug
 		
 	def cmd4Bits(self, cmdIn):
 		
 		cmdBin = bin(cmdIn)[2:].zfill(8) # convertit la commande en binaire sur 8 chiffres
 		#print type(cmdBin)  #debug
 		
-		if common.debug: print cmdBin # debug
+		if common.debug: print(cmdBin) # debug
 		
 		digitalWrite(self.RS,LOW) # RS à LOW
 
@@ -190,7 +188,7 @@ class LiquidCrystal():
 		cmdBin = bin(cmdIn)[2:].zfill(8) # convertit la commande en binaire sur 8 chiffres
 		#print type(cmdBin)  #debug
 		
-		if common.debug: print cmdBin # debug
+		if common.debug: print(cmdBin) # debug
 		
 		digitalWrite(self.RS,HIGH) # RS à LOW
 
@@ -289,7 +287,7 @@ class LiquidCrystal():
 		if ligneIn > self.nombreLignes:  # pour éviter dépassement
 			ligneIn = self.nombreLignes - 1
 		
-		if common.debug: print bin(LCD_SETDDRAMADDR | (colonneIn + debutLignes[ligneIn]))
+		if common.debug: print(bin(LCD_SETDDRAMADDR | (colonneIn + debutLignes[ligneIn])))
 		self.cmd4Bits(LCD_SETDDRAMADDR | (colonneIn + debutLignes[ligneIn])) # se positionne
 		
 	def locate(self,ligneIn, colonneIn):# position au format ligne,colonne avec 1,1 pour 1er caractère
@@ -339,8 +337,8 @@ class Servo():
 		self.pwmMin       = int((255 * self.impulsMin / (1000000.0 / freqBasePWM) ) + 0.5)#255*impulsMin/T
 		self.pwmMax       = int((255 * self.impulsMax / (1000000.0 / freqBasePWM) ) + 0.5)
 		
-		if common.debug: print self.pwmMin # debug
-		if common.debug: print self.pwmMax # debug
+		if common.debug: print(self.pwmMin) # debug
+		if common.debug: print(self.pwmMax) # debug
 		
 		# RAZ PWM par défaut 
 		for pin in PWM:
@@ -362,7 +360,7 @@ class Servo():
 			impulsMaxIn = args[2]
 		
 		#print PWM  debug
-		if common.debug: print brocheIn
+		if common.debug: print(brocheIn)
 		
 		if brocheIn in [PWM0, PWM3, PWM4, PWM5] :
 			setFrequencyPWM(brocheIn, freqBasePWM) # freq 126Hz utilisable avec PWM0, 3, 4, 5  
@@ -379,25 +377,25 @@ class Servo():
 			#self.pwmMin <=> angle 0°
 			#self.pwmMax <=> angle 180°
 			
-			if common.debug: print self.pwmMin # debug
-			if common.debug: print self.pwmMax # debug
+			if common.debug: print(self.pwmMin) # debug
+			if common.debug: print(self.pwmMax) # debug
 			
 		else:  # si la broche n'est pas autorisée 
-			print "Use pin among PWM0, PWM3, PWM4, PWM5"
+			print("Use pin among PWM0, PWM3, PWM4, PWM5")
 		
 	
 	def write(self, angleDegIn):
 		
 		angleDegIn = constrain(angleDegIn, 0, 180)  # limite valeur angle 
-		if common.debug: print angleDegIn # debug 
+		if common.debug: print(angleDegIn) # debug 
 		
 		#self.pwmMin <=> angle 0°
 		#self.pwmMax <=> angle 180°
 		
 		impulsPWM = int(rescale(angleDegIn, 0, 180, self.pwmMin, self.pwmMax))
-		if common.debug: print impulsPWM # debug	
+		if common.debug: print(impulsPWM) # debug	
 		
-		if common.debug: print self.pin 
+		if common.debug: print(self.pin) 
 		analogWrite (self.pin, impulsPWM) 
 		
 		self.currentAngle = angleDegIn
@@ -405,7 +403,7 @@ class Servo():
 	def writeMicroseconds(self,impulsIn):
 		
 		impulsPWM = int((255 * impulsIn / (1000000.0 / freqBasePWM) ) + 0.5)#255*impulsMin/T
-		if common.debug: print impulsPWM # debug
+		if common.debug: print(impulsPWM) # debug
 		
 		analogWrite(self.pin, impulsPWM)
 		

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
@@ -18,7 +17,7 @@ from math import *  # pour acces direct aux fonctions math..
 import random as rd # pour fonctions aléatoires - alias pour éviter problème avec fonction arduino random()
 
 ### importe les autres modules Pyduino ###
-import coreCommon as common # variables communes - doit être présente dans TOUS les modules
+from . import common # variables communes - doit être présente dans TOUS les modules
 
 
 ### Fonctions Pyduino : Core : Base ###
@@ -35,6 +34,9 @@ def setDebug( boolIn):
 	#print "boolIn:",boolIn # message debug de debug... 
 	common.debug = boolIn # reference à common obligatoire pour affectation... 
 	#print "common.debug:",common.debug # message debug de debug... 
+
+def debug(msg):
+    print(msg)
 
 ### temps ###
  
