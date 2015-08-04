@@ -1,11 +1,7 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - nov 2012 - Tous droits réservés
 # GPLv3 - www.mon-club-elec.fr
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 # import utiles
 import os
@@ -23,7 +19,6 @@ OCT = 8
 # constantes utiles pyDuino
 noLoop = False # pour stopper loop
 debug  = False # pour message debug
-# print "init debug" # message debug de debug... 
 
 READ   = "r"
 WRITE  = "w"

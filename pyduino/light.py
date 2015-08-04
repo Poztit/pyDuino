@@ -1,11 +1,7 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 # modules utiles 
 
@@ -17,10 +13,7 @@ from __future__ import unicode_literals
 import re # expression regulieres pour analyse de chaines
 
 # serie 
-try:
-	import serial
-except: 
-	print "ATTENTION : Module Serial manquant : installer le paquet python-serial "
+import serial
 
 ### les sous modules Pyduino utilisés par ce module ###
 from .core.common import * # variables communes
@@ -51,36 +44,36 @@ PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = 3, 5, 6, 9, 10, 11 # identifiant broches PW
 
 # pinMode 
 def pinMode(pin, mode):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 	
 # digitalWrite 
 def digitalWrite(pin, state):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 	
 # digitalRead
 def digitalRead(pin):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 
 def toggle(pin): # inverse l'etat de la broche
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 
 ### gestion broches analogique ###
 
 # analogRead - entrées analogiques 
 def analogRead(pinAnalog):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 
 # analogReadmV - entrées analogiques - renvoie valeur en millivolts
 def analogReadmV(pinAnalog):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 
 # analogWrite # idem Arduino en 0-255
 def analogWrite(pinPWMIn, largeurIn):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 
 # analogWritePercent(pinPWMIn, largeurIn)=> rescale 0-100 vers 0-255
 def analogWritePercent(pinPWMIn, largeurIn):
-	print "Fonction non supportée : vous utilisez la version light"
+	raise "Fonction non supportée : vous utilisez la version light"
 	
 ### Fonctions Libs dédiées ###
 
@@ -109,19 +102,14 @@ class Uart():
 				#uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = arg[0]) # initialisation port serie uart
 				uartPort = serial.Serial('/dev/ttyACM0', rateIn, timeout = arg[0]) # initialisation port serie uart
 				uartPort.flushInput() # vide la file d'attente série
-				
-			print "Initialisation Port Serie : /dev/ttyACM0 @ " + str(rateIn) + " = OK " # affiche debug
-			
 		except:
-			print  "Erreur lors initialisation port Serie" 
+			raise "Erreur lors initialisation port Serie" 
 			
 	def waitOK(self): # fonction pour attendre reponse OK suite initialisation
 		out = None
 		while not out : # attend une réponse 
 			out = Uart.waitingAll() # lit tous les caracteres
 		
-		print out
-	
 	
 	def println(self,text, *arg):  # message avec saut de ligne
 		# Envoi chaine sur port serie uart 

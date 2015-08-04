@@ -1,13 +1,9 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 # par X. HINAULT - Tous droits réservés - 2013
 # www.mon-club-elec.fr - Licence GPLv3
 
 ### imports ###
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 ### temps ###
 import time
@@ -38,6 +34,9 @@ def setDebug( boolIn):
 	#print "boolIn:",boolIn # message debug de debug... 
 	common.debug = boolIn # reference à common obligatoire pour affectation... 
 	#print "common.debug:",common.debug # message debug de debug... 
+
+def debug(msg):
+    print(msg)
 
 ### temps ###
  
