@@ -5,6 +5,5 @@ def test_core():
     from pyduino.core import system
 
 def test_pyduino():
-    from pyduino import light
     from pyduino import pcduino
     from pyduino import rpi
