@@ -1,5 +1,7 @@
 #!/usr/bin/python
-"""Module contenant les variables communes à l'ensemble des module de la librairie"""
+"""Module contenant les variables communes
+    à l'ensemble des module de la librairie
+"""
 
 # import utiles
 import os
@@ -58,7 +60,8 @@ src_dir_video = "sources/videos/" # sources video
 # variables globales utiles - non initialisées ici
 # important : pour réaffecter la valeur d'une variable partagée
 # IL FAUT UTILISER LE NOM DU MODULE DE PARTAGE dans les modules les utilisant
-# sinon c'est une variable globale module qui est créée, pas une variable partagée...
+# sinon c'est une variable globale module qui est créée,
+#pas une variable partagée...
 PLATFORM = None
 
 # fichiers broches E/S
