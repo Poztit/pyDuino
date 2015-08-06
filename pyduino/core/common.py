@@ -76,5 +76,5 @@ PWM = None
 PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = None, None, None, None, None, None
 
 # variables internes utiles
-micros_syst = 0
-millis_syst = 0
+micros_syst_init = 0
+millis_syst_init = 0
