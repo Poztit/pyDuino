@@ -13,6 +13,7 @@ from threading import Timer # importe l'objet Timer du module threading
 ### math ###
 # pour acces direct aux fonctions math..
 from math import sin, cos, tan, sqrt, radians, degrees
+
 # alias pour éviter problème avec fonction arduino random()
 import random as rd
 
@@ -46,7 +47,6 @@ def delayMicroseconds(us):
     """
     # pause en secondes
     time.sleep(us / 1000000.0)
-
 def millisSyst():
     """Retourne le nombre de millisecondes courant de l'horloge système"""
     # millisecondes de l'horloge systeme

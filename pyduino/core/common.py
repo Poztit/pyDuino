@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """Module contenant les variables communes
-    à l'ensemble des module de la librairie
+à l'ensemble des modules de la librairie
 """
 
 # import utiles
