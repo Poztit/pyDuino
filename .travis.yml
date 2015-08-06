@@ -1,10 +1,13 @@
 language: python
 python:
   - "3.4"
-    
+
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-dev.txt
-    
-script: 
+
+script:
   - python setup.py test
+
+notifications:
+  email: false
