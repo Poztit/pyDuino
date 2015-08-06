@@ -1,5 +1,7 @@
 #!/usr/bin/python
-"""Module contenant les fonctions communes Arduino (temps, bits, rescale, random..)"""
+"""Module contenant les fonctions communes Arduino
+    (temps, bits, rescale, random..)
+"""
 ### imports ###
 
 ### temps ###
@@ -9,12 +11,13 @@ import datetime # gestion date
 from threading import Timer # importe l'objet Timer du module threading
 
 ### math ###
-# import math
-from math import sin, cos, tan, sqrt, radians, degrees  # pour acces direct aux fonctions math..
-import random as rd # alias pour éviter problème avec fonction arduino random()
+# pour acces direct aux fonctions math..
+from math import sin, cos, tan, sqrt, radians, degrees
+# alias pour éviter problème avec fonction arduino random()
+import random as rd
 
 ### importe les autres modules Pyduino ###
-from . import common # variables communes - doit être présente dans TOUS les modules
+from . import common
 
 ### Fonctions Pyduino : Core : Base ###
 
@@ -24,38 +27,50 @@ def set_debug(boolIn):
     common.debug = boolIn # reference à common obligatoire pour affectation...
 
 def debug(msg):
+    """Affiche un message de debug"""
     print(msg)
 
 ### temps ###
 
 def delay(ms):
-    """Stoppe le programme pendant la durée (en millisecondes) indiquée en paramètre"""
+    """Stoppe le programme pendant la durée (en millisecondes)
+    indiquée en paramètre
+    """
+    # pause en secondes
     int(ms)
-    time.sleep(ms / 1000.0) # pause en secondes
+    time.sleep(ms / 1000.0)
 
 def delayMicroseconds(us):
-    """Stoppe le programme pendant la durée (en microsecondes) indiquée en paramètre"""
-    time.sleep(us / 1000000.0) # pause en secondes
+    """Stoppe le programme pendant la durée (en microsecondes)
+    indiquée en paramètre
+    """
+    # pause en secondes
+    time.sleep(us / 1000000.0)
 
 def millisSyst():
     """Retourne le nombre de millisecondes courant de l'horloge système"""
-    return int(round(time.time() * 1000)) # millisecondes de l'horloge systeme
+    # millisecondes de l'horloge systeme
+    return int(round(time.time() * 1000))
 
 def millis():
     """Retourne le nombre de millisecondes depuis le debut du programme"""
-    return millisSyst() - common.millis_syst_init # renvoie difference entre milliSyst courant et millisSyst debut code
+    # renvoie difference entre milliSyst courant et millisSyst debut code
+    return millisSyst() - common.millis_syst_init
 
 def microsSyst():
     """Retourne le nombre de microsecondes courant de l'horloge systeme"""
-    return int(round(time.time() * 1000000)) # microsecondes de l'horloge systeme
+    # microsecondes de l'horloge systeme
+    return int(round(time.time() * 1000000))
 
 def micros():
     """Retourne le nombre de millisecondes depuis le debut du programme"""
-    return microsSyst() - common.micros_syst_init # renvoie difference entre microsSyst courant et microsSyst debut code
+    # renvoie difference entre microsSyst courant et microsSyst debut code
+    return microsSyst() - common.micros_syst_init
 
 def timer(delaiIn, fonctionIn):
     """Lance une fonction avec intervalle en ms"""
-    Timer(delaiIn / 1000.0, fonctionIn).start() # relance le timer
+    # relance le timer
+    Timer(delaiIn / 1000.0, fonctionIn).start()
 
 def year():
     """Retourne l'Année (RTC)"""
@@ -152,8 +167,13 @@ def constrain(x, valMin, valMax):
         return x
 
 def rescale(valeur, in_min, in_max, out_min, out_max):
-    """Ré-étalonne un nombre d'une fourchette de valeur vers une autre fourchette"""
-    return (valeur - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    """Ré-étalonne un nombre d'une fourchette de valeur
+    vers une autre fourchette
+    """
+    return ((valeur - in_min) *
+            (out_max - out_min) /
+            (in_max - in_min) +
+            out_min)
 
 def sq(x):
     """Calcule le carré de x"""
@@ -178,7 +198,7 @@ def lowByte(a):
     """Retourne l'octet de poids faible de la valeur a"""
     out = bin(a) # '0b1011000101100101'
     out = out[2:] # enleve 0b '1011000101100101'
-    out = out[-8:] # extrait 8 derniers caracteres - LSB a droite / MSB a gauche
+    out = out[-8:] # extrait 8 derniers caracteres /LSB a droite / MSB a gauche
     while len(out) < 8:
         out = "0" + out # complete jusqu'a 8 O/1
     out = "0b" + out # re-ajoute 0b
@@ -189,7 +209,8 @@ def highByte(a):
     out = bin(a) # '0b1011000101100101'
     out = out[2:] # enleve 0b '1011000101100101'
     while len(out) > 8:
-        out = out[:-8] # tant que plus de 8 chiffres, enleve 8 par 8 = octets low
+        out = out[:-8] # tant que plus de 8 chiffres,
+                    #enleve 8 par 8 = octets low
 
     # une fois obtenu le highbyte, on complete les 0 jusqu'a 8 chiffres
     while len(out) < 8:
@@ -203,19 +224,21 @@ def bitRead(a, index):
     # le bit de poids faible a l'index 0
     out = bin(a) # '0b1011000101100101'
     out = out[2:] # enleve 0b '1011000101100101'
-    out = out[len(out) - index - 1] # rang le plus faible = indice 0 = le plus a droite
-    # extrait le caractere du bit voulu - LSB a droite / MSB a gauche
+    out = out[len(out) - index - 1]
+    # extrait le caractere du bit voulu /LSB a droite / MSB a gauche
     #out="0b"+out # re-ajoute 0b
     return out
 
 
 def bitWrite(a, index, value):
-    """Met le bit d'index voulu de la valeur a à la valeur indiquee (HIGH ou LOW)"""
+    """Met le bit d'index voulu de la valeur a
+    à la valeur indiquee (HIGH ou LOW)
+    """
     # le bit de poids faible a l'index 0
     out = bin(a) # '0b1011000101100101'
     out = out[2:] # enleve 0b '1011000101100101'
     out = list(out) # bascule en list
-    out[len(out) - index - 1] = str(value) # rang le plus faible = indice 0 = le plus a droite
+    out[len(out) - index - 1] = str(value)
     #out=str(out) # rebascule en str - pb car reste format liste
     out = "".join(out) # rebascule en str - concatenation des caracteres
     # remplace le caractere du bit voulu - LSB a droite / MSB a gauche
@@ -225,13 +248,15 @@ def bitWrite(a, index, value):
 def bitSet(a, index):
     """Met le bit d'index voulu de la valeur a a HIGH"""
     # le bit de poids faible a l'index 0
-    return bitWrite(a, index, 1) # met le bit voulu a 1 - Index 0 pour 1er bit poids faible
+    return bitWrite(a, index, 1) # met le bit voulu a 1
+                                 #Index 0 pour 1er bit poids faible
 
 
 def bitClear(a, index):
     """Met le bit d'index voulu de la valeur a a LOW"""
     # le bit de poids faible a l'index 0
-    return bitWrite(a, index, 0) # met le bit voulu a 0 - Index 0 pour 1er bit poids faible
+    return bitWrite(a, index, 0) # met le bit voulu a 0
+                                 #Index 0 pour 1er bit poids faible
 
 
 def bit(index):
