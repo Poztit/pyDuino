@@ -4,9 +4,8 @@
 
 # from pyduinoCoreCommon import * # variables communes
 from . import common  # variables communes
-from .system import (pinMode, analogWrite, digitalWrite, setFrequencyPWM,
-                     rescale, constrain, delay, delayMicroseconds,
-                     PWM, PWM0, PWM3, PWM4, PWM5, OUTPUT, LOW, HIGH)
+from .system import (PWM, PWM0, PWM3, PWM4, PWM5, OUTPUT, LOW, HIGH)
+from .base import (rescale, constrain, delay, delayMicroseconds)
 
 # ### Liquid Crystal ###
 
