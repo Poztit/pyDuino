@@ -1,1 +1,6 @@
 *.py[cod]
+bin/
+lib/
+lib64
+include/
+pyvenv.cfg
