@@ -21,7 +21,7 @@ import serial
 
 # Les sous modules Pyduino utilisés par ce module
 # à mettre après les variables spécifiques ci-dessus
-from core.base import (delay, delayMicroseconds, millisSyst, microsSyst,
+from .core.base import (delay, delayMicroseconds, millisSyst, microsSyst,
                        millis, micros, timer, year, month, day, day_of_week,
                        hour, minute, second, unixtime, now_time,
                        today, now_date_time,
@@ -29,7 +29,7 @@ from core.base import (delay, delayMicroseconds, millisSyst, microsSyst,
                        lowByte, highByte, bitRead, bitWrite,
                        bitSet, bitClear, bit)
 
-from core.system import (MailServer, EthernetServer, Ethernet, Serial,
+from .core.system import (MailServer, EthernetServer, Ethernet, Serial,
                          executeCmd, executeCmdWait, executeCmdOutput,
                          homePath, mainPath, setMainPath, dataPath,
                          setDataPath, sourcesPath, setSourcesPath, exists,
@@ -38,7 +38,7 @@ from core.system import (MailServer, EthernetServer, Ethernet, Serial,
                          listfiles, dircontent, remove, size,
                          appendDataLine, httpResponse)
 
-from core.libs import LiquidCrystal, Servo
+from .core.libs import LiquidCrystal, Servo
 
 
 # Variables globales du module
