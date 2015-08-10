@@ -25,9 +25,7 @@ from .common import (TEXT, IMAGE, AUDIO, VIDEO, DEC, BIN, OCT, HEX, main_dir,
 
 
 # ### Fonctions Système ####
-
 # ## Console ###
-
 # ### Système : ligne de commande ###
 def executeCmd(cmd):
     """Execute la ligne de commande systeme passee en parametre

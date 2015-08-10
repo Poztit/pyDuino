@@ -3,10 +3,20 @@
 # ### importe les autres modules Pyduino ###
 
 # from pyduinoCoreCommon import * # variables communes
-from .common import (PWM, PWM0, PWM3, PWM4, PWM5, OUTPUT, LOW, HIGH)
+# from .common import (PWM, PWM0, PWM3, PWM4, PWM5, OUTPUT, LOW, HIGH)
 # variables communes
 # from .system import
 from .base import (rescale, constrain, delay, delayMicroseconds)
+
+# constantes Arduino like
+INPUT = None
+OUTPUT = None
+PULLUP = None
+
+# identifiants hardware E/S
+A0, A1, A2, A3, A4, A5 = None, None, None, None, None, None
+PWM = None
+PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = None, None, None, None, None, None
 
 # ### Liquid Crystal ###
 

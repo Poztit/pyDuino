@@ -17,7 +17,7 @@ OCT = 8
 
 # constantes utiles pyDuino
 NO_LOOP = False  # pour stopper loop
-DEBUG = False  # pour message debug
+# DEBUG = False  # pour message debug
 
 READ = "r"
 WRITE = "w"
@@ -27,12 +27,12 @@ APPEND = "a"
 UART = "3"
 RX = 0
 TX = 1
-uart = None
-uart_port = None  # objet global
+# Uart = None
+# uartPort = None  # objet global
 
 # objets internes utiles
-Serial = None
-Ethernet = None
+# Serial = None
+# Ethernet = None
 
 # ## chemin de reference ##
 
@@ -66,18 +66,18 @@ src_dir_video = "sources/videos/"  # sources video
 PLATFORM = None
 
 # fichiers broches E/S
-pathMode = None
-pathState = None
+# pathMode = None
+# pathState = None
 
 # constantes Arduino like
-INPUT = None
-OUTPUT = None
-PULLUP = None
+# INPUT = None
+# OUTPUT = None
+# PULLUP = None
 
 # identifiants hardware E/S
-A0, A1, A2, A3, A4, A5 = None, None, None, None, None, None
-PWM = None
-PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = None, None, None, None, None, None
+# A0, A1, A2, A3, A4, A5 = None, None, None, None, None, None
+# PWM = None
+# PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = None, None, None, None, None, None
 
 # variables internes utiles
 micros_syst_init = 0
