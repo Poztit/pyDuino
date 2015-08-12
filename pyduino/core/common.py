@@ -36,27 +36,28 @@ TX = 1
 
 # ## chemin de reference ##
 
-# user_name=getpass.getuser()
-home_dir = os.getenv("HOME") + "/"  # chemin de référence
-main_dir = os.getenv("HOME") + "/"  # chemin de référence
-
 # constantes de SELECTION
 TEXT = "TEXT"
 IMAGE = "IMAGE"
 AUDIO = "AUDIO"
 VIDEO = "VIDEO"
 
-# ## chemins data fichiers texte, sons, image, video ##
-data_dir_text = "data/text/"  # data texte relatif a main dir
-data_dir_audio = "data/audio/"  # data audio
-data_dir_image = "data/images/"  # data images
-data_dir_video = "data/videos/"  # data video
-
-# ## chemins sources fichiers texte, sons, images, video ##
-src_dir_text = "sources/text/"  # sources texte relatif a main dir
-src_dir_audio = "sources/audio/"  # sources audio
-src_dir_image = "sources/images/"  # sources images
-src_dir_video = "sources/videos/"  # sources video
+DIRS = {
+    'home': os.getenv('HOME') + '/',
+    'main': os.getenv('HOME') + '/',
+    'data': {
+        'text': 'data/text/',
+        'audio': 'data/audio/',
+        'image': 'data/images/',
+        'video': 'data/videos/',
+    },
+    'src': {
+        'text': 'source/text/',
+        'audio': 'source/audio/',
+        'image': 'source/images/',
+        'video': 'source/videos/',
+    }
+}
 
 # variables globales utiles - non initialisées ici
 # important : pour réaffecter la valeur d'une variable partagée
@@ -80,5 +81,5 @@ PLATFORM = None
 # PWM0, PWM1, PWM2, PWM3, PWM4, PWM5 = None, None, None, None, None, None
 
 # variables internes utiles
-micros_syst_init = 0
-millis_syst_init = 0
+MICROS_SYST_INIT = 0
+MILLIS_SYST_INIT = 0
