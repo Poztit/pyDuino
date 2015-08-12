@@ -22,21 +22,21 @@ import serial
 # Les sous modules Pyduino utilisés par ce module
 # à mettre après les variables spécifiques ci-dessus
 from .core.base import (delay, delayMicroseconds, millisSyst, microsSyst,
-                       millis, micros, timer, year, month, day, day_of_week,
-                       hour, minute, second, unixtime, now_time,
-                       today, now_date_time,
-                       constrain, rescale, sq, randomSeed, random,
-                       lowByte, highByte, bitRead, bitWrite,
-                       bitSet, bitClear, bit)
+                        millis, micros, timer, year, month, day, day_of_week,
+                        hour, minute, second, unixtime, now_time,
+                        today, now_date_time,
+                        constrain, rescale, sq, randomSeed, random,
+                        lowByte, highByte, bitRead, bitWrite,
+                        bitSet, bitClear, bit)
 
 from .core.system import (MailServer, EthernetServer, Ethernet, Serial,
-                         executeCmd, executeCmdWait, executeCmdOutput,
-                         homePath, mainPath, setMainPath, dataPath,
-                         setDataPath, sourcesPath, setSourcesPath, exists,
-                         isdir, isfile, dirname, currentdir, changedir,
-                         rewindDirectory, mkdir, rmdir, listdirs,
-                         listfiles, dircontent, remove, size,
-                         appendDataLine, httpResponse)
+                          executeCmd, executeCmdWait, executeCmdOutput,
+                          homePath, mainPath, setMainPath, dataPath,
+                          setDataPath, sourcesPath, setSourcesPath, exists,
+                          isdir, isfile, dirname, currentdir, changedir,
+                          rewindDirectory, mkdir, rmdir, listdirs,
+                          listfiles, dircontent, remove, size,
+                          appendDataLine, httpResponse)
 
 from .core.libs import LiquidCrystal, Servo
 
@@ -237,7 +237,7 @@ def analogReadmV(*args):
         if pinAnalog == A0 or pinAnalog == A1:
             mesure = rescale(mesure, 0, 63, 0, 2000)
         elif (pinAnalog == A2 or pinAnalog == A3 or
-             pinAnalog == A4 or pinAnalog == A5):
+              pinAnalog == A4 or pinAnalog == A5):
             mesure = rescale(mesure, 0, 4095, 0, 3300)
             # mesure=rescale(mesure,0,4095,0,3000)
             # en pratique, la mesure 4095 est atteinte à 3V..
@@ -275,7 +275,7 @@ def analogReadmVRepeat(*args):
         # réalise n mesures avec la forme
         # analogReadmV(pinAnalogIn, rangeIn, mVIn)
         for i in range(repeatIn):
-            sommeMesures = sommeMesures + analogReadmV(pinAnalogIn, rangeIn, mVIn)
+            sommeMesures = + analogReadmV(pinAnalogIn, rangeIn, mVIn)
         moyenne = float(sommeMesures) / repeatIn  # calcul de la moyenne
     return moyenne
 
@@ -284,15 +284,21 @@ def analogReadmVRepeat(*args):
 # D'après : https://github.com/pcduino/c_enviroment/blob/
 # master/hardware/arduino/cores/arduino/wiring_analog.c
 def setFrequencyPWM(pinPWMIn, frequencePWMIn):
-    # broches PWM 3/9/10/11 supporte frequences[125-2000]Hz à differents dutycycle
-    # broches PWM 5/6 supporte frequences [195,260,390,520,781]Hz à 256 dutycycle
+    # broches PWM 3/9/10/11 supporte frequences[125-2000]Hz
+    # à differents dutycycle
+    # broches PWM 5/6 supporte frequences [195,260,390,520,781]Hz
+    # à 256 dutycycle
     global initPwmFlag
     pin = ctypes.c_int(pinPWMIn)  # broche
     freq = ctypes.c_uint(frequencePWMIn)  # frequence
-    # ATTENTION : la valeur ctype ne pourra pas etre utilisee comme une valeur Python...
+    # ATTENTION : la valeur ctype ne pourra pas etre utilisee comme
+    # une valeur Python...
     # attention : utiliser pinPWMIn pour les conditions - pin est c_type.
     pwmfreq = PWM_Freq()  # declare objet structure
-    if (pinPWMIn == 3 or pinPWMIn == 5 or pinPWMIn == 6 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11) and frequencePWMIn > 0:
+    if ((pinPWMIn == 3 or pinPWMIn == 5 or pinPWMIn == 6 or
+        pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11) and
+       frequencePWMIn > 0):
+
         pwmfreq.channel = pin
         pwmfreq.freq = freq
         pwmfreq.step = 0
@@ -300,23 +306,35 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
         fd = open(pwm_dev, 'r')
         if pinPWMIn == 5 or pinPWMIn == 6:  # si broches 5 et 6
             # pin(5/6) support frequency[195,260,390,520,781] @256 dutycycle
-            if frequencePWMIn == 195 or frequencePWMIn == 260 or frequencePWMIn == 390 or frequencePWMIn == 520 or frequencePWMIn == 781:
-                ret = fcntl.ioctl(fd, PWM_FREQ, pwmfreq)  # fixe la frequence voulue
-                # initPwmFlag[pinPWMIn]=True # flag temoin config freq PWM mis à True
-                initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn  # flag temoin config freq PWM mis à valeur courante freq
+            if (frequencePWMIn == 195 or frequencePWMIn == 260 or
+                frequencePWMIn == 390 or frequencePWMIn == 520 or
+               frequencePWMIn == 781):
+
+                ret = fcntl.ioctl(fd, PWM_FREQ, pwmfreq)
+                # fixe la frequence voulue
+                # initPwmFlag[pinPWMIn]=True
+                # flag temoin config freq PWM mis à True
+                initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn
+                # flag temoin config freq PWM mis à valeur courante freq
                 if ret < 0:
                     print("Problème lors configuration PWM")
                     if fd:
                         fd.close()
                     return
             else:
-                raise "Fréquence incompatible : choisir parmi 195,260,390,520,781 Hz"
+                raise ("Fréquence incompatible :\
+                choisir parmi 195,260,390,520,781 Hz")
 
-        elif pinPWMIn == 3 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11:
-            # broches PWM 3/9/10/11 supporte frequences[125-2000]Hz à differents dutycycle
-            if frequencePWMIn >= MIN_PWMTMR_FREQ and frequencePWMIn <= MAX_PWMTMR_FREQ:  # si freq entre 126 et 2000Hz
+        elif (pinPWMIn == 3 or pinPWMIn == 9 or
+              pinPWMIn == 10 or pinPWMIn == 11):
+            # broches PWM 3/9/10/11 supporte frequences[125-2000]Hz
+            # à differents dutycycle
+            if (frequencePWMIn >= MIN_PWMTMR_FREQ
+               and frequencePWMIn <= MAX_PWMTMR_FREQ):
+                # si freq entre 126 et 2000Hz
                 # -- stop pwmtmr sur broche ---
-                ret = fcntl.ioctl(fd, PWMTMR_STOP, ctypes.c_ulong(pwmfreq.channel))
+                ret = fcntl.ioctl(fd, PWMTMR_STOP,
+                                  ctypes.c_ulong(pwmfreq.channel))
 
                 if ret < 0:
                     print("Probleme lors arret PWM")
@@ -326,8 +344,10 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 
                 # -- fixe frequence pwm
                 ret = fcntl.ioctl(fd, PWM_FREQ, pwmfreq)
-                # initPwmFlag[pinPWMIn]=True # flag temoin config freq PWM mis à True
-                initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn  # flag temoin config freq PWM mis à valeur courante freq
+                # initPwmFlag[pinPWMIn]=True
+                # flag temoin config freq PWM mis à True
+                initPwmFlag[PWM.index(pinPWMIn)] = frequencePWMIn
+                # flag temoin config freq PWM mis à valeur courante freq
 
                 if ret < 0:
                     print("Probleme lors configuration PWM")
@@ -343,18 +363,24 @@ def setFrequencyPWM(pinPWMIn, frequencePWMIn):
 # analogWrite - sortie analogique = PWM
 def analogWriteHardware(pinPWMIn, largeurIn):
     global initPwmFlag
-    if initPwmFlag[PWM.index(pinPWMIn)] is False:  # si frequence PWM pas initialisee
-        setFrequencyPWM(pinPWMIn, defaultPwmFreq)  # utilise la frequence PWM par defaut
+    if initPwmFlag[PWM.index(pinPWMIn)] is False:
+        # si frequence PWM pas initialisee
+        setFrequencyPWM(pinPWMIn, defaultPwmFreq)
+        # utilise la frequence PWM par defaut
 
     pin = ctypes.c_int(pinPWMIn)  # broche
     value = ctypes.c_int(largeurIn)  # largeur impulsion
 
-    pwmconfig = PWM_Config()  # declare objet structure like C  voir classe debut code
+    pwmconfig = PWM_Config()
+    # declare objet structure like C  voir classe debut code
 
     pwmconfig.channel = pin
     pwmconfig.dutycycle = value
 
-    if (pinPWMIn == 3 or pinPWMIn == 5 or pinPWMIn == 6 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11) and largeurIn >= 0 and largeurIn <= MAX_PWM_LEVEL:
+    if ((pinPWMIn == 3 or pinPWMIn == 5 or pinPWMIn == 6 or
+        pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11) and
+       largeurIn >= 0 and largeurIn <= MAX_PWM_LEVEL):
+
         # utiliser largeurIn car value est ctype...
         # ouverture fichier
         fd = open(pwm_dev, 'r')
@@ -368,7 +394,8 @@ def analogWriteHardware(pinPWMIn, largeurIn):
                     fd.close()
                 return
 
-        elif pinPWMIn == 3 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11:
+        elif (pinPWMIn == 3 or pinPWMIn == 9 or
+              pinPWMIn == 10 or pinPWMIn == 11):
             # -- fixe largeur pwm
             ret = fcntl.ioctl(fd, PWM_CONFIG, pwmconfig)
             # print ret
@@ -396,16 +423,23 @@ def analogWriteHardware(pinPWMIn, largeurIn):
 def analogWrite(pinPWMIn, largeurIn):
     global initPwmFlag
 
-    if initPwmFlag[PWM.index(pinPWMIn)] is False:  # si frequence PWM pas initialisee
-        setFrequencyPWM(pinPWMIn, defaultPwmFreq)  # utilise la frequence PWM par defaut
+    if initPwmFlag[PWM.index(pinPWMIn)] is False:
+        # si frequence PWM pas initialisee
+        setFrequencyPWM(pinPWMIn, defaultPwmFreq)
+        # utilise la frequence PWM par defaut
 
-    if pinPWMIn == 3 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11:  # duty natif 0-60 pour ces  broches en 520Hz
-        maxDuty = int(33000 / initPwmFlag[PWM.index(pinPWMIn)])  # initPwmFlag contient la valeur de la freq courante
+    if pinPWMIn == 3 or pinPWMIn == 9 or pinPWMIn == 10 or pinPWMIn == 11:
+        # duty natif 0-60 pour ces broches en 520Hz
+        maxDuty = int(33000 / initPwmFlag[PWM.index(pinPWMIn)])
+        # initPwmFlag contient la valeur de la freq courante
 
-        largeurIn = rescale(largeurIn, 0, 255, 0, maxDuty)  # rescale 0-255 vers 0-maxDuty
-    # elif pinPWMIn==5 or pinPWMIn==6: # duty natif 0-255 pour ces 2 broches = inchangé
+        largeurIn = rescale(largeurIn, 0, 255, 0, maxDuty)
+        # rescale 0-255 vers 0-maxDuty
+    # elif pinPWMIn==5 or pinPWMIn==6:
+    # duty natif 0-255 pour ces 2 broches = inchangé
 
-    analogWriteHardware(pinPWMIn, largeurIn)  # appelle fonction utilisant largeur Hardware
+    analogWriteHardware(pinPWMIn, largeurIn)
+    # appelle fonction utilisant largeur Hardware
 
 
 # analogWritePercent(pinPWMIn, largeurIn)=> rescale 0-100 vers 0-255
@@ -415,13 +449,15 @@ def analogWritePercent(pinPWMIn, largeurIn):
 
 # tone
 def tone(pinPWMIn, frequencyIn):
-    setFrequencyPWM(pinPWMIn, frequencyIn)  # modifie la fréquence - attention aux valeurs limites possibles
+    setFrequencyPWM(pinPWMIn, frequencyIn)
+    # modifie la fréquence - attention aux valeurs limites possibles
     analogWrite(pinPWMIn, 127)  # onde 50% largeur
 
 
 # noTone
 def noTone(pinPWMIn):
-    setFrequencyPWM(pinPWMIn, 520)  # restaure fréquence par défaut - et impulsion mise à 0%
+    setFrequencyPWM(pinPWMIn, 520)
+    # restaure fréquence par défaut - et impulsion mise à 0%
     analogWrite(pinPWMIn, 0)  # onde 0% largeur # pas indispensable normalement
 
 
@@ -441,14 +477,24 @@ class Uart():
         # -- initialisation port serie uart
         try:
             if len(arg) == 0:  # si pas d'arguments
-                # uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = 10) # initialisation port serie uart
-                uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout=10)  # initialisation port serie uart
+                # uartPort=serial.Serial('/dev/ttyS1', rateIn,
+                # serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE,
+                # timeout = 10) # initialisation port serie uart
+                uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout=10)
+                # initialisation port serie uart
             elif len(arg) == 1:  # si timeout
-                # uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = arg[0]) # initialisation port serie uart
-                uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout=arg[0])  # initialisation port serie uart
+                # uartPort=serial.Serial('/dev/ttyS1', rateIn,
+                # serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE,
+                # timeout = arg[0]) # initialisation port serie uart
+                uartPort = serial.Serial('/dev/ttyS1', rateIn, timeout=arg[0])
+                # initialisation port serie uart
             elif len(arg) == 2:  # si timeout et port
-                # uartPort=serial.Serial('/dev/ttyS1', rateIn, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout = arg[0]) # initialisation port serie uart
-                uartPort = serial.Serial(arg[1], rateIn, timeout=arg[0])  # initialisation port serie uart
+                # uartPort=serial.Serial('/dev/ttyS1', rateIn,
+                # serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE,
+                # timeout = arg[0])
+                # initialisation port serie uart
+                uartPort = serial.Serial(arg[1], rateIn, timeout=arg[0])
+                # initialisation port serie uart
         except:
             raise "Erreur lors initialisation port Serie"
 
@@ -466,7 +512,9 @@ class Uart():
 
         # print arg - debug
 
-        if not len(arg) == 0:  # si arg a au moins 1 element (nb : None renvoie True.. car arg existe..)
+        if not len(arg) == 0:
+            # si arg a au moins 1 element
+            # (nb : None renvoie True.. car arg existe..)
             if arg[0] == DEC and text.isdigit():
                 out = text
                 # print(out) # debug
@@ -510,8 +558,8 @@ class Uart():
         uartPort.write(strIn)
 
     # --- lecture d'une ligne jusqu'a caractere de fin indique
-    def waiting(self, *arg):  # lecture d'une chaine en reception sur port serie
-
+    def waiting(self, *arg):
+        # lecture d'une chaine en reception sur port serie
         global uartPort
 
         if len(arg) == 0:
@@ -525,18 +573,21 @@ class Uart():
 
         # delay(20) # laisse temps aux caracteres d'arriver
 
-        while uartPort.inWaiting():  # tant que au moins un caractere en reception
+        while uartPort.inWaiting():
+            # tant que au moins un caractere en reception
             charIn = uartPort.read()  # on lit le caractere
             # print charIn # debug
 
-            if charIn == endLine:  # si caractere fin ligne , on sort du while
+            if charIn == endLine:
+                # si caractere fin ligne , on sort du while
                 # print("caractere fin de ligne recu") # debug
                 break  # sort du while
-            else:  # tant que c'est pas le saut de ligne, on l'ajoute a la chaine
+            else:
+                # tant que c'est pas le saut de ligne, on l'ajoute a la chaine
                 chaineIn = chaineIn + charIn
                 # print chaineIn # debug
 
-        # -- une fois sorti du while : on se retrouve ici - attention indentation
+        # Une fois sorti du while : on se retrouve ici - attention indentation
         if len(chaineIn) > 0:  # ... pour ne pas avoir d'affichage si ""
             # print(chaineIn) # affiche la chaine # debug
             return chaineIn  # renvoie la chaine
@@ -554,13 +605,14 @@ class Uart():
 
         # delay(20) # laisse temps aux caracteres d'arriver
 
-        while uartPort.inWaiting():  # tant que au moins un caractere en reception
+        while uartPort.inWaiting():
+            # tant que au moins un caractere en reception
             charIn = uartPort.read()  # on lit le caractere
             # print charIn # debug
             chaineIn = chaineIn + charIn
             # print chaineIn # debug
 
-        # -- une fois sorti du while : on se retrouve ici - attention indentation
+        # Une fois sorti du while : on se retrouve ici - attention indentation
         if len(chaineIn) > 0:  # ... pour ne pas avoir d'affichage si ""
             # print(chaineIn) # affiche la chaine # debug
             return chaineIn  # renvoie la chaine
@@ -573,11 +625,14 @@ class Uart():
 
 # ### initialisation ###
 
-Serial = Serial()  # declare une instance Serial pour acces aux fonctions depuis code principal
+Serial = Serial()
+# declare une instance Serial pour acces aux fonctions depuis code principal
 # Serial = common.Serial
 
-Ethernet = Ethernet()  # declare instance Ethernet implicite pour acces aux fonctions
-# Ethernet = common.Ethernet  # declare instance Ethernet implicite pour acces aux fonctions
+Ethernet = Ethernet()
+# declare instance Ethernet implicite pour acces aux fonctions
+# Ethernet = common.Ethernet
+# declare instance Ethernet implicite pour acces aux fonctions
 
 Uart = Uart()  # declare instance Uart implicite
 # Uart = common.Uart
